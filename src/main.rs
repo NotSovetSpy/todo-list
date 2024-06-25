@@ -5,8 +5,6 @@ fn main() -> Result<(), std::io::Error>{
     let terminal = setup()?;
     
     loop {
-        terminal.write_line(TITLE)?;
-        terminal.write_line("")?;
         display_content(terminal.clone())?;
         let status = run(terminal.clone())?;
         

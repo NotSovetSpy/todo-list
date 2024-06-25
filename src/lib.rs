@@ -1,7 +1,7 @@
-use core::task;
-
 use::console::Term;
 use dialoguer::Select;
+use std::arch::x86_64::_MM_FROUND_CUR_DIRECTION;
+use std::{fs, env, path::PathBuf};
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum Status {
@@ -9,14 +9,20 @@ pub enum Status {
     Exit,
 }
 
-pub const TITLE: &str = "To-Do list application"; 
+pub const TITLE: &str = "To-Do list"; 
+pub const SECTION: &str = "----------------------------";
 
 pub fn display_content(terminal: Term) -> Result<(), std::io::Error>{
-    let tasks: Vec<&str> = vec!["Task 1", "Task 2", "Task 3"];
-    let mut index = 1;
+    terminal.write_line(TITLE)?;
+    terminal.write_line(SECTION)?;
+
+    let tasks = read_list();
+    let mut index: i32 = 1;
     for task in tasks {
-        terminal.write_line(&format!("{index}.{task}"))?; 
+        terminal.write_line(&format!("{index}.{task}"))?;
+        index += 1;
     }
+    terminal.write_line(SECTION)?;
     terminal.write_line("")?;
     Ok(())
 }
@@ -29,4 +35,19 @@ pub fn run(terminal: Term) -> Result<Status, std::io::Error>{
         .interact()
         .unwrap();
     Ok((Status::Exit))
+}
+
+fn read_list() -> Vec<String> {
+    let binding = env::current_dir()
+                                    .unwrap()
+                                    .join("src\\todo_list.txt");
+    let path = binding
+                                    .to_str()
+                                    .unwrap();
+    let data = fs::read_to_string(path).expect("Enable read file!");
+    
+    data
+        .lines()
+        .map(|line| line.to_string())
+        .collect()
 }
