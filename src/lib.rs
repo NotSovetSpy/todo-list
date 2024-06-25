@@ -1,3 +1,5 @@
+use core::task;
+
 use::console::Term;
 use dialoguer::Select;
 
@@ -10,6 +12,12 @@ pub enum Status {
 pub const TITLE: &str = "To-Do list application"; 
 
 pub fn display_content(terminal: Term) -> Result<(), std::io::Error>{
+    let tasks: Vec<&str> = vec!["Task 1", "Task 2", "Task 3"];
+    let mut index = 1;
+    for task in tasks {
+        terminal.write_line(&format!("{index}.{task}"))?; 
+    }
+    terminal.write_line("")?;
     Ok(())
 }
 
