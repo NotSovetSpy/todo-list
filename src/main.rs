@@ -11,6 +11,8 @@ fn main() -> Result<(), std::io::Error>{
         if status == Status::Exit {
             break Ok(());
         }
+
+        terminal.clear_screen().unwrap();
     }
 }
 
