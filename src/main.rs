@@ -20,6 +20,5 @@ fn setup() -> Result<Term, std::io::Error> {
     let terminal = Term::stdout();
     terminal.clear_screen()?;
     terminal.set_title(TITLE);
-    terminal.hide_cursor()?;
     Ok(terminal)
 }
