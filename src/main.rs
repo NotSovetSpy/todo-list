@@ -1,12 +1,13 @@
 use::console::Term;
-use todo_list::{display_content, run, Status, TITLE};
+use todo_list::{display_content, run, Status, TITLE, task_list_operation};
 
 fn main() -> Result<(), std::io::Error>{
     let terminal = setup()?;
     
     loop {
-        display_content(terminal.clone())?;
-        let status = run(terminal.clone())?;
+        let mut tasks = task_list_operation::read_list();
+        display_content(terminal.clone(), &tasks)?;
+        let status = run(terminal.clone(), &mut tasks)?;
         
         if status == Status::Exit {
             break Ok(());

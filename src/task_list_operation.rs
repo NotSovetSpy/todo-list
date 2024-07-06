@@ -16,13 +16,18 @@ pub fn read_list() -> Vec<String> {
         .collect()
 }
 
-pub fn write_to_list(task: String) -> Result<Status, std::io::Error> {
+pub fn write_to_list(tasks: &mut Vec<String>, task: Option<String>) -> Result<Status, std::io::Error> {
     let binding = env::current_dir()
                                     .unwrap()
                                     .join("src\\todo_list.txt");
     let path = binding
                                     .to_str()
                                     .unwrap();
-    fs::write(path, task)?;
+    if task.is_some() {
+        tasks.push(task.unwrap());
+
+    }
+    let tasks = tasks.join("\n");
+    fs::write(path, tasks)?;
     Ok(Status::Running)    
 }
